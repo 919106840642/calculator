@@ -24,6 +24,12 @@ protected:
     QPushButton *button_7;
     QPushButton *button_8;
     QPushButton *button_9;
+    QPushButton *button_A;
+    QPushButton *button_B;
+    QPushButton *button_C;
+    QPushButton *button_D;
+    QPushButton *button_E;
+    QPushButton *button_F;
     QPushButton *button_ce;
     QPushButton *button_jia;
     QPushButton *button_jian;
@@ -34,7 +40,16 @@ protected:
     QPushButton *button_c10;
     QPushButton *button_c16;
     QPushButton *button_compare;
-    QPushButton *button_
+    QPushButton *button_gy;
+    QPushButton *button_gb;
+    QPushButton *button_m;
+    QPushButton *button_n;
+    QPushButton *button_log;
+    QPushButton *button_mi;
+    QPushButton *button_sin;
+    QPushButton *button_cos;
+    QPushButton *button_tan;
+
     QString s;
 
 public:
@@ -57,6 +72,12 @@ private slots:
     void button_7_clicked();
     void button_8_clicked();
     void button_9_clicked();
+    void button_A_clicked();
+    void button_B_clicked();
+    void button_C_clicked();
+    void button_D_clicked();
+    void button_E_clicked();
+    void button_F_clicked();
     void button_ce_clicked();
     void button_result_clicked();
     void button_cheng_clicked();
@@ -67,6 +88,15 @@ private slots:
     void button_c10_clicked();
     void button_c16_clicked();
     void button_compare_clicked();
+    void button_gy_clicked();
+    void button_gb_clicked();
+    void button_m_clicked();
+    void button_n_clicked();
+    void button_log_clicked();
+    void button_mi_clicked();
+    void button_sin_clicked();
+    void button_cos_clicked();
+    void button_tan_clicked();
 };
 
 
