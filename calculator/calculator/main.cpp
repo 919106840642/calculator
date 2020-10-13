@@ -1,13 +1,11 @@
-#include "mainwindow.h"
+#include "calculator.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    Calculator w;
     w.show();
-    w.setFixedSize(800,600);
-    w.setWindowTitle("计算器");
-    w.myLayout();
+
     return a.exec();
 }
