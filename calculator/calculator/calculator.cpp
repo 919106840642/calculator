@@ -863,7 +863,26 @@ void Calculator::on_powerfunction_clicked()
 
 void Calculator::on_qf_clicked()
 {
-
+    QByteArray c=put_ctrl.new_put.toUtf8();
+    int m[4];
+    int j=0;
+    m[j]=c[0]-48;
+    for(int i=1;i<put_ctrl.new_put.length();i++)
+    {
+        if(put_ctrl.new_put[i]!=' ')
+            {
+           m[j]=m[j]*10+c[i]-48;
+        }
+        else
+        {
+            j++;
+            i++;
+            m[j]=c[i]-48;
+        }
+    }
+    int y=m[0]*m[1]*m[1]+m[2]*m[1]+m[3];
+    s =s.number(y);
+    ui->display->setText(s);
 }
 //二次函数
 
@@ -930,38 +949,25 @@ void Calculator::on_logfunction_clicked()
 void Calculator::on_firstof_clicked()
 {
     QByteArray c=put_ctrl.new_put.toUtf8();
-    int m=c[0]-48;
-    int n,x;
+    int m[3];
+    int j=0;
+    m[j]=c[0]-48;
     for(int i=1;i<put_ctrl.new_put.length();i++)
     {
-        if(put_ctrl.new_put[i]==" ")
-        {
-            for(int j=i+1;j<put_ctrl.new_put.length();j++)
+        if(put_ctrl.new_put[i]!=' ')
             {
-                if(put_ctrl.new_put[j]==" ")
-                {
-
-                    n=c[j]-48;
-                    j++;
-                    for(;j<put_ctrl.new_put.length();j++)
-                    {
-                        n=n*10+c[j]-48;
-                    }
-                }
-                else
-                {
-                    x=x*10+c[j]-48;
-                }
-            }
+           m[j]=m[j]*10+c[i]-48;
         }
         else
         {
-            m=m*10+c[i]-48;
+            j++;
+            i++;
+            m[j]=c[i]-48;
         }
     }
-qDebug()<<m;
-qDebug()<<n;
-qDebug()<<x;
+    int y=m[0]*m[1]+m[2];
+    s =s.number(y);
+    ui->display->setText(s);
 }
 //一次函数
 
