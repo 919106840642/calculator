@@ -41,9 +41,9 @@ private:
     void calculate_result(QString expression);
 
 private slots:
+
     void push_button_0();
     void push_button_1();
-
     void push_button_2();
     void push_button_3();
     void push_button_4();

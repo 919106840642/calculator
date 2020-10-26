@@ -11,7 +11,7 @@ Calculator::Calculator(QWidget *parent) :
     ui(new Ui::Calculator)
 {
     ui->setupUi(this);
-    /*所有按键，信号连接*/
+
     connect(ui->button_0,SIGNAL(clicked()),this,SLOT(push_button_0()));
     connect(ui->button_1,SIGNAL(clicked()),this,SLOT(push_button_1()));
     connect(ui->button_2,SIGNAL(clicked()),this,SLOT(push_button_2()));
@@ -35,8 +35,7 @@ Calculator::Calculator(QWidget *parent) :
 
     connect(ui->button_AC,SIGNAL(clicked()),this,SLOT(push_button_AC()));
     connect(ui->button_CE,SIGNAL(clicked()),this,SLOT(push_button_CE()));
-
-    /*结构体初始化*/
+//所有按键，信号连接
 }
 
 Calculator::~Calculator()
@@ -44,7 +43,6 @@ Calculator::~Calculator()
     delete ui;
 }
 
-/*获取操作符优先级*/
 int Calculator::Priority(QString data)
 {
     int priority;
@@ -60,8 +58,8 @@ int Calculator::Priority(QString data)
         priority = -1;
     return priority;
 }
+//获取操作符优先级
 
-/*将表达式的数据，操作符分割，依次存入mask_buffer数组中*/
 int Calculator::mask_data(QString expression, QString *mask_buffer)
 {
     int i,k = 0,cnt = 0;
@@ -82,7 +80,9 @@ int Calculator::mask_data(QString expression, QString *mask_buffer)
                 cnt ++;
             }
             mask_buffer[k] = temp;
-        }else{
+        }
+        else
+        {
             QString temp = *p;
             p++;
             cnt ++;
@@ -91,8 +91,8 @@ int Calculator::mask_data(QString expression, QString *mask_buffer)
     }
     return k;
 }
+//将表达式的数据，操作符分割，依次存入mask_buffer数组中
 
-/*将获取到的分割好的表达式数组，转化为逆波兰表达式，存入数组repolish中*/
 int Calculator::re_polish(QString *mask_buffer,QString *repolish,int length)
 {
     QStack<QString> st2;
@@ -133,8 +133,8 @@ int Calculator::re_polish(QString *mask_buffer,QString *repolish,int length)
     }
     return i;
 }
+//将获取到的分割好的表达式数组，转化为逆波兰表达式，存入数组repolish中d
 
-/*计算逆波兰表达式值并显示*/
 double Calculator::repolish_calculat(QString *repolish,int length)
 {
     QStack <double> st;
@@ -192,17 +192,19 @@ double Calculator::repolish_calculat(QString *repolish,int length)
     ui->put_data->setText(res);
     return st.top();
 }
+//计算逆波兰表达式值并显示
 
-/*表达式计算整合*/
 void Calculator::calculate_result(QString expression)
 {
     QString mask_buffer[100]={"0"},repolish[100]={"0"};
     int length = mask_data(expression,mask_buffer);
     length = re_polish(mask_buffer,repolish,length);
-    double result = repolish_calculat(repolish,length);
+    double result;
+    result = repolish_calculat(repolish,length);
 }
+//表达式计算整合
 
-/*数据按键输入*/
+//数据按键输入
 void Calculator::push_button_0()
 {
     if(put_ctrl.new_put == "0"){
@@ -315,9 +317,9 @@ void Calculator::on_A_clicked()
 void Calculator::on_B_clicked()
 {
     if(put_ctrl.new_put == "0")
-        put_ctrl.new_put = "A";
+        put_ctrl.new_put = "B";
     else
-        put_ctrl.new_put += "A";
+        put_ctrl.new_put += "B";
     ui->put_data->setText(put_ctrl.new_put);
 }
 
@@ -384,7 +386,7 @@ void Calculator::push_button_right()
         ui->display->setText(put_ctrl.old_put);
     }
 }
-/*+ - * / = 按键输入*/
+//+ - * / = 按键输入
 void Calculator::push_button_add()
 {
     if(put_ctrl.old_put == "0"){
@@ -395,21 +397,28 @@ void Calculator::push_button_add()
     }
     else{
         QString::iterator p = put_ctrl.old_put.end()-1;
-        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' ){
-            if(put_ctrl.new_put == "0"){
-                if(put_ctrl.update_flag){
+        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' )
+        {
+            if(put_ctrl.new_put == "0")
+            {
+                if(put_ctrl.update_flag)
+                {
                     put_ctrl.old_put += put_ctrl.new_put;
                     put_ctrl.old_put += "+";
                     put_ctrl.new_put = "0";
                     put_ctrl.update_flag = 0;
                 }
-            }else{
+            }
+            else
+            {
                 put_ctrl.old_put += put_ctrl.new_put;
                 put_ctrl.old_put += "+";
                 put_ctrl.new_put = "0";
                 put_ctrl.update_flag = 0;
             }
-        }else if(*p == ')') {
+        }
+        else if(*p == ')')
+        {
             put_ctrl.old_put += "+";
         }
     }
@@ -418,29 +427,38 @@ void Calculator::push_button_add()
 
 void Calculator::push_button_minus()
 {
-    if(put_ctrl.old_put == "0"){
+    if(put_ctrl.old_put == "0")
+    {
         put_ctrl.old_put = put_ctrl.new_put;
         put_ctrl.old_put += "-";
         put_ctrl.new_put = "0";
         put_ctrl.update_flag = 0;
     }
-    else{
+    else
+    {
         QString::iterator p = put_ctrl.old_put.end()-1;
-        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' ){
-            if(put_ctrl.new_put == "0"){
-                if(put_ctrl.update_flag || *p == '('){
+        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' )
+        {
+            if(put_ctrl.new_put == "0")
+            {
+                if(put_ctrl.update_flag || *p == '(')
+                {
                     put_ctrl.old_put += put_ctrl.new_put;
                     put_ctrl.old_put += "-";
                     put_ctrl.new_put = "0";
                     put_ctrl.update_flag = 0;
                 }
-            }else{
+            }
+            else
+            {
                 put_ctrl.old_put += put_ctrl.new_put;
                 put_ctrl.old_put += "-";
                 put_ctrl.new_put = "0";
                 put_ctrl.update_flag = 0;
             }
-        }else if(*p == ')') {
+        }
+        else if(*p == ')')
+        {
             put_ctrl.old_put += "-";
         }
     }
@@ -449,7 +467,8 @@ void Calculator::push_button_minus()
 
 void Calculator::push_button_ride()
 {
-    if(put_ctrl.old_put == "0"){
+    if(put_ctrl.old_put == "0")
+    {
         put_ctrl.old_put = put_ctrl.new_put;
         put_ctrl.old_put += "*";
         put_ctrl.new_put = "0";
@@ -457,21 +476,28 @@ void Calculator::push_button_ride()
     }
     else{
         QString::iterator p = put_ctrl.old_put.end()-1;
-        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' ){
-            if(put_ctrl.new_put == "0"){
-                if(put_ctrl.update_flag){
+        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' )
+        {
+            if(put_ctrl.new_put == "0")
+            {
+                if(put_ctrl.update_flag)
+                {
                     put_ctrl.old_put += put_ctrl.new_put;
                     put_ctrl.old_put += "*";
                     put_ctrl.new_put = "0";
                     put_ctrl.update_flag = 0;
                 }
-            }else{
+            }
+            else
+            {
                 put_ctrl.old_put += put_ctrl.new_put;
                 put_ctrl.old_put += "*";
                 put_ctrl.new_put = "0";
                 put_ctrl.update_flag = 0;
             }
-        }else if(*p == ')') {
+        }
+        else if(*p == ')')
+        {
             put_ctrl.old_put += "*";
         }
     }
@@ -480,29 +506,38 @@ void Calculator::push_button_ride()
 
 void Calculator::push_button_divide()
 {
-    if(put_ctrl.old_put == "0"){
+    if(put_ctrl.old_put == "0")
+    {
         put_ctrl.old_put = put_ctrl.new_put;
         put_ctrl.old_put += "/";
         put_ctrl.new_put = "0";
         put_ctrl.update_flag = 0;
     }
-    else{
+    else
+    {
         QString::iterator p = put_ctrl.old_put.end()-1;
-        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' ){
-            if(put_ctrl.new_put == "0"){
-                if(put_ctrl.update_flag){
+        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' )
+        {
+            if(put_ctrl.new_put == "0")
+            {
+                if(put_ctrl.update_flag)
+                {
                     put_ctrl.old_put += put_ctrl.new_put;
                     put_ctrl.old_put += "/";
                     put_ctrl.new_put = "0";
                     put_ctrl.update_flag = 0;
                 }
-            }else{
+            }
+            else
+            {
                 put_ctrl.old_put += put_ctrl.new_put;
                 put_ctrl.old_put += "/";
                 put_ctrl.new_put = "0";
                 put_ctrl.update_flag = 0;
             }
-        }else if(*p == ')') {
+        }
+        else if(*p == ')')
+        {
             put_ctrl.old_put += "/";
         }
     }
@@ -511,22 +546,29 @@ void Calculator::push_button_divide()
 
 void Calculator::push_button_equal()
 {
-    if(put_ctrl.old_put == "0"){
+    if(put_ctrl.old_put == "0")
+    {
         push_button_AC();
         return;
     }
-    else{
+    else
+    {
         QString::iterator p = put_ctrl.old_put.end()-1;
-        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' ){
+        if(*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' )
+        {
             put_ctrl.old_put += put_ctrl.new_put;
-            if(put_ctrl.brackets_cnt > 0){
+            if(put_ctrl.brackets_cnt > 0)
+            {
                 for(int i = 0 ; i < put_ctrl.brackets_cnt ; i++)
                     put_ctrl.old_put += ")";
             }
             put_ctrl.new_put = "0";
             put_ctrl.update_flag = 0;
-        }else if(*p == ')') {
-            if(put_ctrl.brackets_cnt > 0){
+        }
+        else if(*p == ')')
+        {
+            if(put_ctrl.brackets_cnt > 0)
+            {
                 for(int i = 0 ; i < put_ctrl.brackets_cnt ; i++)
                     put_ctrl.old_put += ")";
             }
@@ -617,6 +659,11 @@ void Calculator::on_c2to10_clicked()
     int len=put_ctrl.new_put.length();
     if(len!=1)
     {
+        for(int i=1;put_ctrl.new_put[i]!='1'&&put_ctrl.new_put[i]!='0';i++)
+        {
+            ui->put_data->setText("二进制输入错误");
+            break;
+        }
         for(int i=1;i<len;i++)
         {
             k=k*2;
@@ -851,11 +898,12 @@ void Calculator::on_powerfunction_clicked()
             m=m*10+c[i]-48;
         }
     }
-    for(;m>0;m--)
+    int x=n;
+    for(;m>1;m--)
     {
-        n=n*n;
+        x=x*n;
     }
-    int y = n;
+    int y = x;
     s =s.number(y);
     ui->display->setText(s);
 }
@@ -908,11 +956,12 @@ void Calculator::on_expf_clicked()
             m=m*10+c[i]-48;
         }
     }
-    for(;m>0;m--)
-    {
-        n=n*n;
+    int x=n;
+    for(;m>1;m--)
+    { 
+        x=x*n;
     }
-    int y = n;
+    int y = x;
     s =s.number(y);
     ui->display->setText(s);
 }
